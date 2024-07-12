@@ -57,11 +57,11 @@ Future<List<SpotifyAlbum>?> getNewReleases() async {
   await _setAccessToken();
   const String url = 'https://api.spotify.com/v1/browse/new-releases';
   final response = await _getResponse(url);
-    if (_checkResponseStatus(response)) {
-      final data = jsonDecode(response.body);
-      return List<SpotifyAlbum>.from(data['albums']['items'].map((item) => SpotifyAlbum(data: item))) ;
-    }
-    return null;
+  if (_checkResponseStatus(response)) {
+    final data = jsonDecode(response.body);
+    return List<SpotifyAlbum>.from(data['albums']['items'].map((item) => SpotifyAlbum(data: item))) ;
+  }
+  return null;
 }
 
 Future<List<String>?> getGenresList() async {

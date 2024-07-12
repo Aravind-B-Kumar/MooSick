@@ -2,9 +2,11 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:moosick/screens/ui_search_category.dart';
 import 'package:moosick/services/spotify_api.dart';
 //import 'package:spotify/spotify.dart';
 import '../services/spotify_types.dart';
+import '../spotify_data_contents.dart';
 import '../startup_init.dart';
 import 'colors.dart';
 
@@ -30,9 +32,12 @@ class _SearchUiState extends State<SearchUi> {
 
 
   Future<List<SpotifyCategoryItem>?> _populateList() async{
-    List<SpotifyCategoryItem>? items = await getCategories();
-    if(items!.length%2==1) items.removeLast();
-    return items;
+    if (searchPageContents==null) {
+      print("not here");
+      searchPageContents = await getCategories();
+      if(searchPageContents!.length%2==1) searchPageContents?.removeLast();
+    }
+    return searchPageContents;
   }
 
   @override
@@ -100,8 +105,12 @@ class _SearchUiState extends State<SearchUi> {
                                   GestureDetector(
                                     child: Container(
                                       padding: const EdgeInsets.symmetric(horizontal: 10),// padding for text content inside
-                                      decoration: const BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(10),), color: Colors.deepPurple),
-                                      height: MediaQuery.of(context).size.height/ 9,
+                                      decoration: BoxDecoration(
+                                        borderRadius: const BorderRadius.all(Radius.circular(10),),
+                                        color: Colors.black,
+                                        image: DecorationImage(image: NetworkImage(items[index*2].imgUrl),fit: BoxFit.fill),
+                                      ),
+                                      height: MediaQuery.of(context).size.height/ 8,
                                       width: MediaQuery.of(context).size.width / 2.3,
                                       child: Align(
                                         alignment: Alignment.topLeft,
@@ -109,10 +118,19 @@ class _SearchUiState extends State<SearchUi> {
                                       ),
                                     ),
 
-                                    onTap: () {
-                                      if(items[index*2].name=="New Releases"){
+                                    onTap: () async {
+                                      // https://developer.spotify.com/documentation/web-api/reference/get-a-categories-playlists
 
+                                      final a = MusixLyricsApi();
+                                      String? id = await a.searchTrack("adiye");
+                                      print(id);
+                                      if(id!=null){
+                                        String ly = await a.getLyrics(id);
+                                        print(ly);
                                       }
+
+                                      //if(items[index*2].name=="New Releases"){
+                                      //}
 
                                     },
 
@@ -123,8 +141,12 @@ class _SearchUiState extends State<SearchUi> {
                                   GestureDetector(
                                     child: Container(
                                       padding: const EdgeInsets.symmetric(horizontal: 9),
-                                      decoration: const BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(10),), color: Colors.red),
-                                      height: MediaQuery.of(context).size.height/ 10,
+                                      decoration: BoxDecoration(
+                                        borderRadius: const BorderRadius.all(Radius.circular(10),),
+                                        color: Colors.black,
+                                        image: DecorationImage(image: NetworkImage(items[index*2+1].imgUrl),fit: BoxFit.fill),
+                                      ),
+                                      height: MediaQuery.of(context).size.height/ 8,
                                       width: MediaQuery.of(context).size.width / 2.3,
                                       child: Align(
                                         alignment: Alignment.topLeft,
@@ -133,7 +155,7 @@ class _SearchUiState extends State<SearchUi> {
                                     ),
 
                                     onTap: () {
-
+                                      //Navigator.of(context).push(MaterialPageRoute( builder: (_) =>  MyPage() ));
                                     },
                                   ),
                                 ],
@@ -216,3 +238,5 @@ class _SearchBarState extends State<SearchBar> {
     );
   }
 }
+
+

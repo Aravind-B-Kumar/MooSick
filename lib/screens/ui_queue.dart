@@ -19,9 +19,13 @@ class _QueueUiState extends State<QueueUi> {
       body: Center(
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 10),// padding for text content inside
-          decoration: const BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(10),), color: Colors.deepPurple),
-          height: MediaQuery.of(context).size.height/ 10,
-          width: MediaQuery.of(context).size.width / 2.3,
+          decoration: const BoxDecoration(
+            borderRadius: BorderRadius.all(Radius.circular(10),),
+            color: Colors.deepPurple,
+            image: DecorationImage(image: NetworkImage("https://t.scdn.co/images/728ed47fc1674feb95f7ac20236eb6d7.jpeg"),fit: BoxFit.fill),
+          ),
+          height: MediaQuery.of(context).size.height/ 8,
+          width: MediaQuery.of(context).size.width / 2.2,
           child: Align(
             alignment: Alignment.topLeft,
             child: Text("Sed"),

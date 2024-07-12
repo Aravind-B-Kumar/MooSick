@@ -89,12 +89,14 @@ class SpotifyCategoryItem {
   final String id;
   final String name;
   final String href; // api url
+  final String imgUrl;
   final List icons;
 
   SpotifyCategoryItem({required Map<String, dynamic> data}) :
       id = data["id"],
       name = data["name"],
       href = data["href"],
+      imgUrl = data["icons"][0]["url"],
       icons = data["icons"];
 }
 

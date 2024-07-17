@@ -42,3 +42,28 @@ Future<void> initHive() async {
   final appDocumentDir = await getApplicationDocumentsDirectory();
   Hive.init(appDocumentDir.path);
 }
+
+String getDuration(int duration) {
+  if(duration<0 || duration==0) return "00:00";
+
+  int minutes = duration ~/ 60;
+  int seconds = duration % 60;
+  int hours = minutes ~/ 60;
+  minutes = minutes % 60;
+  int days = hours ~/ 24;
+  hours = hours % 24;
+  List<String> durationParts = [];
+  if (days > 0) {
+    durationParts.add('$days'.padLeft(2, '0'));
+  }
+  if (hours > 0) {
+    durationParts.add('$hours'.padLeft(2, '0'));
+  }
+  if (minutes > 0) {
+    durationParts.add('$minutes'.padLeft(2, '0'));
+  }
+  if (seconds > 0) {
+    durationParts.add('$seconds'.padLeft(2, '0'));
+  }
+  return durationParts.join(':');
+}

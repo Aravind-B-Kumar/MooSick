@@ -46,6 +46,7 @@ dependencies:
   flutter_secure_storage: ^9.2.2
   http: ^1.2.1
   spotify: ^0.13.6+1
+  audio_service: ^0.18.14
 
 dev_dependencies:
 

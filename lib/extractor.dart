@@ -2,7 +2,7 @@ import 'package:just_audio_background/just_audio_background.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 import 'package:just_audio/just_audio.dart';
 
-Future<Uri?> getAudioStreamUrl(String videoId) async {
+Future<Uri?> getAudioStreamUrl(String videoId, AudioPlayer player) async {
   /*
      Bitrate: 49.36 Kbit/s kbps
     Tag: 139  1.66MiB
@@ -30,8 +30,7 @@ Future<Uri?> getAudioStreamUrl(String videoId) async {
       print("Bitrate: ${audioStream.bitrate} kbps");
       print("Codec: ${audioStream.tag}\n");
     }
-
-    final player = AudioPlayer(); // Create the player instance
+    // Create the player instance
     //print(streamManifest.audioOnly.withHighestBitrate().url);
 
     //await player.setUrl(streamManifest.audioOnly.where((stream) => stream.tag <= 139).first.url.toString());
@@ -46,8 +45,9 @@ Future<Uri?> getAudioStreamUrl(String videoId) async {
             )
         )
     );
+
     await player.play();
-    await player.dispose();
+    //await player.dispose();
 
     // Dispose the player when it's no longer needed
     //await player.dispose();

@@ -209,7 +209,7 @@ Future<(bool,int)> testCredentials(String clientId, String clientSecret) async {
 
     return (response.statusCode == 200, response.statusCode);
 
-  } on Exception catch (e) {
+  } on Exception catch (_) {
     return (false,-1);
   }
 }

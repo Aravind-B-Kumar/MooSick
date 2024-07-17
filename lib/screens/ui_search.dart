@@ -33,7 +33,6 @@ class _SearchUiState extends State<SearchUi> {
 
   Future<List<SpotifyCategoryItem>?> _populateList() async{
     if (searchPageContents==null) {
-      print("not here");
       searchPageContents = await getCategories();
       if(searchPageContents!.length%2==1) searchPageContents?.removeLast();
     }
@@ -120,14 +119,6 @@ class _SearchUiState extends State<SearchUi> {
 
                                     onTap: () async {
                                       // https://developer.spotify.com/documentation/web-api/reference/get-a-categories-playlists
-
-                                      final a = MusixLyricsApi();
-                                      String? id = await a.searchTrack("adiye");
-                                      print(id);
-                                      if(id!=null){
-                                        String ly = await a.getLyrics(id);
-                                        print(ly);
-                                      }
 
                                       //if(items[index*2].name=="New Releases"){
                                       //}

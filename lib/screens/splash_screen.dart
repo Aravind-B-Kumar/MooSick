@@ -32,7 +32,7 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
         final credentials = sp.SpotifyApiCredentials(clientID, clientSecret);
         spotify = sp.SpotifyApi(credentials);
         return const Landing();
-      } on Exception catch (e) {
+      } on Exception catch (_) {
         await credStorage.delete(key: "clientId");
         await credStorage.delete(key: "clientSecret");
         ScaffoldMessenger.of(context).showSnackBar(createSnackBar(context, "An Error occurred!", color:  Colors.red.shade800 ,milliseconds: 800));

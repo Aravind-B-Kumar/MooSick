@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:moosick/player_data.dart';
+import 'package:moosick/screens/ui_now_playing.dart';
 import 'package:moosick/startup_init.dart';
 
 import '../extractor.dart';
@@ -15,6 +17,8 @@ class QueueUi extends StatefulWidget {
 class _QueueUiState extends State<QueueUi> {
   final player = AudioPlayer();
   final songNameControl = TextEditingController();
+
+  SongInfo? song;
 
   Duration position = Duration.zero;
   Duration duration = Duration.zero;
@@ -55,59 +59,70 @@ class _QueueUiState extends State<QueueUi> {
               heroTag: null,
               onPressed: () async {
                 print("---------------------------");
-                await getAudioStreamUrl(songNameControl.text, player); //"USUM71301306"
+                //await getAudioStreamUrl(songNameControl.text, player); //"USUM71301306"
 
-                player.positionStream.listen((p){
-                  setState(() => position = p );
-                });
-                player.durationStream.listen((d){
-                  setState(() => duration = d! );
-                });
-                player.playerStateStream.listen((state) {
-                  if(state.processingState == ProcessingState.completed){
-                    setState(() {
-                      position=Duration.zero;
-                    });
-                    player.pause();
-                    player.seek(position);
-                  }
-                });
+                song = await getSongInfo(songNameControl.text);
+
+                Navigator.of(context).push(
+                  MaterialPageRoute(builder: (_) => NowPlayingUi(song: song!))
+                );
+
+                // setState(() {});
+                // //print("${song.title} ${song.audioStreamUrl}");
+                //
+                // player.positionStream.listen((p){
+                //   setState(() => position = p );
+                // });
+                // player.durationStream.listen((d){
+                //   setState(() => duration = d! );
+                // });
+                // player.playerStateStream.listen((state) {
+                //   if(state.processingState == ProcessingState.completed){
+                //     setState(() {
+                //       position=Duration.zero;
+                //     });
+                //     player.pause();
+                //     player.seek(position);
+                //   }
+                // });
 
               },
               child: const Text("Search"),
             ),
 
-            Text(getDuration(position.inSeconds)),
-            SliderTheme(
-              data: SliderTheme.of(context).copyWith(
-                activeTrackColor: Colors.green,
-                inactiveTrackColor: Colors.grey.shade900,
-                thumbShape: SliderComponentShape.noThumb,
-                overlayColor: Colors.transparent, // when pressing slider, a shape pops up
-                trackHeight: 1,
-              ),
-              child: Slider(
-                min: 0.0,
-                max: duration.inSeconds.toDouble(),
-                value: position.inSeconds.toDouble(),
-                onChanged: (double value) async {
-                  await player.seek(Duration(seconds: value.toInt()));
-                },
-              ),
-            ),
+            //if(song!=null) PlayerWidget(song: song!,),
 
-
-            Text(getDuration(duration.inSeconds)),
-            IconButton(
-              onPressed: () async {
-                if(player.playing) {
-                  await player.pause();
-                } else {
-                  await player.play();
-                }
-              },
-              icon: Icon(player.playing ? Icons.pause : Icons.play_arrow),
-            )
+            // Text(getDuration(position.inSeconds)),
+            // SliderTheme(
+            //   data: SliderTheme.of(context).copyWith(
+            //     activeTrackColor: Colors.green,
+            //     inactiveTrackColor: Colors.grey.shade900,
+            //     thumbShape: SliderComponentShape.noThumb,
+            //     overlayColor: Colors.transparent, // when pressing slider, a shape pops up
+            //     trackHeight: 1,
+            //   ),
+            //   child: Slider(
+            //     min: 0.0,
+            //     max: duration.inSeconds.toDouble(),
+            //     value: position.inSeconds.toDouble(),
+            //     onChanged: (double value) async {
+            //       await player.seek(Duration(seconds: value.toInt()));
+            //     },
+            //   ),
+            // ),
+            //
+            //
+            // Text(getDuration(duration.inSeconds)),
+            // IconButton(
+            //   onPressed: () async {
+            //     if(player.playing) {
+            //       await player.pause();
+            //     } else {
+            //       await player.play();
+            //     }
+            //   },
+            //   icon: Icon(player.playing ? Icons.pause : Icons.play_arrow),
+            // )
 
           ],
         ),

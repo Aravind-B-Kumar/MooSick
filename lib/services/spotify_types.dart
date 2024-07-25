@@ -84,6 +84,16 @@ class SpotifyAlbum {
         );
 }
 
+class SpotifyTrack extends SpotifyAlbum {
+  late final String isrc;
+
+  SpotifyTrack({required Map<String, dynamic> data}) : super(data: data) {
+    isrc = data["external_ids"]["isrc"];
+  }
+}
+
+
+
 
 class SpotifyCategoryItem {
   final String id;

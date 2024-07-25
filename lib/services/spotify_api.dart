@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 import 'package:moosick/services/spotify_types.dart';
+import 'package:spotify/spotify.dart';
 import '../startup_init.dart';
 
   // 77c511f475fa4bd6ae478926c45ddee2
@@ -84,9 +85,34 @@ Future<List<SpotifyCategoryItem>?> getCategories() async {
   return null;
 }
 
+//---------------------------------------------------------
+Future<Track?> getTrack(String query) async {
+  final result = spotify?.search.get(query,types: [SearchType.track]);
+  try {
+    Track track = (await result?.getPage(1))?.first.items?.first;
+    return track;
+  } catch(_){
+    return null ;
+  }
+}
 
+Future<String?> getISRCCode(String query) async{
+  final Track? track = await getTrack(query);
+  try{
+    return track?.externalIds!.isrc;
+  } catch (_){
+    return null;
+  }
+}
 
-
+String? getISRCCodeFromTrack(Track track) {
+  try{
+    return track.externalIds!.isrc;
+  } catch (_){
+    return null;
+  }
+}
+//------------------------------------------------
 
 
 

@@ -59,10 +59,10 @@ String getDuration(int duration) {
   if (hours > 0) {
     durationParts.add('$hours'.padLeft(2, '0'));
   }
-  if (minutes > 0) {
+  if (minutes >= 0) {
     durationParts.add('$minutes'.padLeft(2, '0'));
   }
-  if (seconds > 0) {
+  if (seconds >= 0) {
     durationParts.add('$seconds'.padLeft(2, '0'));
   }
   return durationParts.join(':');

@@ -16,8 +16,7 @@ class HomeUi extends StatefulWidget {
 class _HomeUiState extends State<HomeUi> {
   bool _isLoaded = false;
   int _itemcount = 5;
-  String _title =
-      "iehfiuhehwerjveusgigvkshggggggggggggggggggggggggggggggggggggggggg";
+  String _title ="iehfiuhehwerjveusgigvkshggggggggggggggggggggggggggggggggggggggggg";
 
   List<String> _imagePaths = [
     // TODO: make api call get categories, releases ,recommendations

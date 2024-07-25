@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:moosick/screens/ui_home.dart';
+import 'package:moosick/screens/ui_now_playing.dart';
 import 'package:moosick/screens/ui_profile.dart';
 import 'package:moosick/screens/ui_queue.dart';
 import 'package:moosick/screens/ui_search.dart';

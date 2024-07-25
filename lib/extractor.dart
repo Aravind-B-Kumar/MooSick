@@ -1,7 +1,52 @@
+import 'dart:async';
+import 'dart:convert';
+
 import 'package:just_audio_background/just_audio_background.dart';
+import 'package:moosick/services/spotify_api.dart';
+import 'package:moosick/services/spotify_types.dart';
+import 'package:moosick/startup_init.dart';
+import 'package:spotify/spotify.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 import 'package:just_audio/just_audio.dart';
 
+class SongInfo{
+  final String videoId;
+  final String title;
+  final String artist;
+  final String thumbUrl;
+  final Uri audioStreamUrl;
+  final Track spTrack;
+
+  SongInfo({required Video video, required Uri audioUrl, required Track sptrack}):
+      videoId = video.id.toString(),
+      title = video.title,
+      artist = video.author,
+      thumbUrl = video.thumbnails.mediumResUrl,
+      audioStreamUrl = audioUrl,
+      spTrack = sptrack;
+}
+
+// Future<void> testfucntion(String query) async{
+//   //String? isrc = getISRCCode(query);
+//   //print(isrc);
+//
+//   final result = spotify?.search.get(query,types: [SearchType.track]);
+//   //final a = SpotifyTrack(data: jsonDecode(result.toString())["tracks"]["items"][0]);
+//   Track b = (await result?.getPage(1))?.first.items?.first;
+//   print(b.externalIds?.isrc );
+// }
+
+Future<SongInfo> getSongInfo(String query) async {
+  Track? track = await getTrack(query);
+  String? isrc = await getISRCCodeFromTrack(track!);
+  final youtube = YoutubeExplode();
+  var vid =(await youtube.search.search(isrc!)).first;
+  final streamManifest = await youtube.videos.streamsClient.getManifest(vid.id);
+  youtube.close();
+  return SongInfo(video: vid, audioUrl: streamManifest.audioOnly.where((stream) => stream.tag == 249).first.url, sptrack: track);
+}
+
+//--------------------------
 Future<Uri?> getAudioStreamUrl(String videoId, AudioPlayer player) async {
   /*
      Bitrate: 49.36 Kbit/s kbps

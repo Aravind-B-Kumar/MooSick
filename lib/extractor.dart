@@ -36,8 +36,8 @@ class SongInfo{
 //   print(b.externalIds?.isrc );
 // }
 
-Future<SongInfo> getSongInfo(String query) async {
-  Track? track = await getTrack(query);
+Future<SongInfo> getSongInfo(String query,{bool isId = false}) async {
+  Track? track = await getTrack(query,isId);
   String? isrc = await getISRCCodeFromTrack(track!);
   final youtube = YoutubeExplode();
   var vid =(await youtube.search.search(isrc!)).first;

@@ -86,7 +86,13 @@ Future<List<SpotifyCategoryItem>?> getCategories() async {
 }
 
 //---------------------------------------------------------
-Future<Track?> getTrack(String query) async {
+Future<Track?> getTrack(String query, bool isId) async {
+
+  if(isId){
+    Track? track = await spotify?.tracks.get(query);
+    return track;
+  }
+
   final result = spotify?.search.get(query,types: [SearchType.track]);
   try {
     Track track = (await result?.getPage(1))?.first.items?.first;
@@ -96,14 +102,14 @@ Future<Track?> getTrack(String query) async {
   }
 }
 
-Future<String?> getISRCCode(String query) async{
-  final Track? track = await getTrack(query);
-  try{
-    return track?.externalIds!.isrc;
-  } catch (_){
-    return null;
-  }
-}
+// Future<String?> getISRCCode(String query) async{
+//   final Track? track = await getTrack(query);
+//   try{
+//     return track?.externalIds!.isrc;
+//   } catch (_){
+//     return null;
+//   }
+// }
 
 String? getISRCCodeFromTrack(Track track) {
   try{
